@@ -47,9 +47,11 @@ Evaluate the model with the testing data.
 ## PROGRAM
 
 Program developed by: MOHAMED ATHIL B
+
 Register Number: 212222230081
 
 ### Importing Modules:
+```
 from google.colab import auth
 import gspread
 from google.auth import default
@@ -63,8 +65,9 @@ from tensorflow.keras.metrics import RootMeanSquaredError as rmse
 
 import pandas as pd
 import matplotlib.pyplot as plt
-
+```
 ### Authenticate & Create Dataframe using Data in Sheets:
+```
 auth.authenticate_user()
 creds, _ = default()
 gc = gspread.authorize(creds)
@@ -75,18 +78,21 @@ rows = sheet.get_all_values()
 df = pd.DataFrame(rows[1:], columns=rows[0])
 df = df.astype({'Input':'float'})
 df = df.astype({'Output':'float'})
-
+```
 ### Assign X and Y values:
+```
 x = df[["Input"]] .values
 y = df[["Output"]].values
-
+```
 ### Normalize the values & Split the data:
+```
 scaler = MinMaxScaler()
 scaler.fit(x)
 x_n = scaler.fit_transform(x)
 x_train,x_test,y_train,y_test = train_test_split(x_n,y,test_size = 0.3,random_state = 3)
-
+```
 ### Create a Neural Network & Train it:
+```
 ai_brain = Seq([
     Den(9,activation = 'relu',input_shape=[1]),
     Den(16,activation = 'relu'),
@@ -97,21 +103,24 @@ ai_brain.compile(optimizer = 'rmsprop',loss = 'mse')
 
 ai_brain.fit(x_train,y_train,epochs=1000)
 ai_brain.fit(x_train,y_train,epochs=1000)
-
+```
 ### Plot the Loss:
+```
 loss_plot = pd.DataFrame(ai_brain.history.history)
 loss_plot.plot()
-
+```
 ### Evaluate the model:
+```
 err = rmse()
 preds = ai_brain.predict(x_test)
 err(y_test,preds)
-
+```
 ### Predict for some value:
+```
 x_n1 = [[9]]
 x_n_n = scaler.transform(x_n1)
 ai_brain.predict(x_n_n)
-
+```
 ## Dataset Information
 ![image](https://github.com/Bmohamedathil/basic-nn-model/assets/119560261/70f1a614-e226-4416-a88c-4e40a3b3f4cb)
 
